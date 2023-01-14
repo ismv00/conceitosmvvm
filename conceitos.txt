@@ -1,0 +1,8 @@
+Consiste em dividir o projeto em 3 camadas
+	View 
+	Model 
+	ViewModel
+	
+Model - tem a função de armazenar e proteger os dados
+ViewModel - Carrega os dados e ajustar e entregar para a View - Processar e disponibilizar para a view os dados que serão exibidos.
+View - Tem a função de mostrar os dados - visível para o usuário final
