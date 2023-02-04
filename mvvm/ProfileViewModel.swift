@@ -9,10 +9,10 @@ import Foundation
 
 //MARK: - VIEWMODEL
 //Estanciando o tipo de usuário
-struct ProfileViewModel {
+class ProfileViewModel: ObservableObject {
     
-    var isFollowing = false
-    var userFollowers = String()
+    @Published var isFollowing = false
+    @Published var userFollowers = String()
     
     var user = User(picture: "profile",
                     name: "Igor S. Menezes",
@@ -23,7 +23,7 @@ struct ProfileViewModel {
             loadFollowers()
     }
     
-    mutating func loadFollowers() {
+     func loadFollowers() {
         self.userFollowers = customizeNumber(value: user.followers)
     }
     func customizeNumber(value: Double) -> String {
@@ -34,7 +34,7 @@ struct ProfileViewModel {
         return "\(shorten)K"
     }
     
-    mutating func followToogle() {
+     func followToogle() {
         self.isFollowing.toggle()
         self.isFollowing ? (self.user.followers += 1) : (self.user.followers -= 1)
         loadFollowers()

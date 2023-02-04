@@ -10,10 +10,21 @@ import SwiftUI
 //MARK: - VIEW
 struct ContentView: View {
     
-    @State var viewModel = ProfileViewModel()
+    @StateObject var viewModel = ProfileViewModel()
+
+    var body: some View {
+        VStack {
+            ProfileDataView()
+            ActionView()
+        }
+        .environmentObject(viewModel)
+        .animation(.easeOut, value: viewModel.isFollowing)
+        
+    }
+}
     
-    
-    
+struct ProfileDataView: View {
+    @EnvironmentObject var viewModel: ProfileViewModel
     var body: some View {
         VStack {
             Image(viewModel.user.picture)
@@ -28,35 +39,38 @@ struct ContentView: View {
                 .font(.system(size:23, weight: .regular))
             Text(viewModel.userFollowers)
                 .font(.system(size: 80, weight: .light))
-                .padding(40)
+                .padding(viewModel.isFollowing ? 40 : 25)
             
-            
-            VStack {
-                //Seguir --
-                Button{ viewModel.followToogle() } label: {
-                    Label(!viewModel.isFollowing ? "follow" : "unfollow", systemImage: "person.circle")
-                        .font(.title3)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .tint(!viewModel.isFollowing ? .blue : .black)
-                
-                Button{} label: {
-                    Label("Enviar Mensagem", systemImage: "message")
-                        .font(.title3)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .disabled(!viewModel.isFollowing)
-            }
-            .padding(20)
         }
-        
     }
 }
-    
+
+struct ActionView: View {
+    @EnvironmentObject var viewModel: ProfileViewModel
+    var body: some View {
+        VStack {
+            //Seguir --
+            Button{ viewModel.followToogle() } label: {
+                Label(!viewModel.isFollowing ? "follow" : "unfollow", systemImage: "person.circle")
+                    .font(.title3)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .tint(!viewModel.isFollowing ? .blue : .black)
+            
+            Button{} label: {
+                Label("Enviar Mensagem", systemImage: "message")
+                    .font(.title3)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .disabled(!viewModel.isFollowing)
+        }
+        .padding(20)
+    }
+}
     
 struct ContentView_Previews: PreviewProvider {
         static var previews: some View {
